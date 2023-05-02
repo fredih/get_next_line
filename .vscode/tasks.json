@@ -9,7 +9,7 @@
                 "-g",
                 "*.c",
                 "-D",
-                "buffer_size=2",
+                "BUFFER_SIZE=2",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

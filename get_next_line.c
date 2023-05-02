@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/04/27 22:38:23 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/04/29 12:23:45 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ char	*get_next_line(int fd)
 	size_t		line_length;
 
 	line_length = 1;
-	current_line = malloc(sizeof(char) * line_length);
-	if (read(fd, current_line, 1) != 1)
+	current_line = malloc(sizeof(char) * (line_length + 1));
+	if (read(fd, current_line, BUFFER_SIZE) != BUFFER_SIZE)
 	{
 		free(current_line);
 		return (NULL);
@@ -28,16 +28,28 @@ char	*get_next_line(int fd)
 	line_copy = malloc(sizeof(char) * (line_length + 1));
 	while (current_line[line_length - 1] != '\n')
 	{
+		if (line_length == 23)
+		{
+			int j = 1;
+			j++;
+		}
 		ft_memcpy(line_copy, current_line, line_length);
-		if (read(fd, &line_copy[line_length], 1) != 1)
+		char readchar;
+		int result = read(fd, &readchar, BUFFER_SIZE) ;
+		if (result != BUFFER_SIZE)
+		{
+
 			break ;
+		}
+		line_copy[line_length] = readchar;
 		free(current_line);
-		current_line = malloc(sizeof(char) * (line_length + 1));
+		current_line = malloc(sizeof(char) * (line_length + 2));
 		ft_memcpy(current_line, line_copy, line_length + 1);
 		line_length++;
 		free(line_copy);
 		line_copy = malloc(sizeof(char) * (line_length + 1));
 	}
+	current_line[line_length] = '\0';
 	free(line_copy);
 	return (current_line);
 }
