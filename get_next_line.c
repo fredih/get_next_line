@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/03 14:09:22 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:31:15 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,32 @@ char	*get_next_line(int fd)
 	char		*line_copy;
 	size_t		line_length;
 	static char	*buffer = NULL;
+	size_t		i;
 
 	if (buffer != NULL)
 		buffer = malloc(sizeof(char) * BUFFER_SIZE);
-	line_length = 1;
+	line_length = BUFFER_SIZE;
 	current_line = malloc(sizeof(char) * (line_length + 1));
-	if (read(fd, current_line, 1) != 1)
+	if (read(fd, buffer, BUFFER_SIZE) == 0)
 	{
 		free(current_line);
 		return (NULL);
 	}
-	line_copy = malloc(sizeof(char) * (line_length + 1));
-	while (current_line[line_length - 1] != '\n')
+	line_copy = malloc(sizeof(char) * (line_length + BUFFER_SIZE));
+	while (read(fd, buffer, BUFFER_SIZE) == BUFFER_SIZE)
 	{
-		// if (line_length == 23)
-		// {
-		// 	int j = 1;
-		// 	j++;
-		// }
-		ft_memcpy(line_copy, current_line, line_length);
-		if (read(fd, buffer, 1) != 1)
-			break ;
-		free(current_line);
-		current_line = malloc(sizeof(char) * (line_length + 2));
-		ft_memcpy(current_line, line_copy, line_length + 1);
-		line_length++;
-		free(line_copy);
-		line_copy = malloc(sizeof(char) * (line_length + 1));
+		i = 0;
+		while (line_copy[line_length - 1] != '\n')
+		{
+			ft_memcpy(line_copy, current_line, line_length);
+			line_copy[line_length] = buffer[i];
+			line_length++;
+			i++;
+		}
+			free(current_line);
+			current_line = malloc(sizeof(char) * (line_length + 1));
+			free(line_copy);
+			line_copy = malloc(sizeof(char) * (line_length + BUFFER_SIZE));
 	}
 	current_line[line_length] = '\0';
 	free(line_copy);
