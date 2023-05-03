@@ -6,12 +6,15 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:10:03 by aantonio          #+#    #+#             */
-/*   Updated: 2023/04/27 22:20:08 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:02:13 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 
 # include <stdlib.h>
 # include <stdio.h>
