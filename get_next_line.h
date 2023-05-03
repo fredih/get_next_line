@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:10:03 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/03 14:02:13 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:51:01 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@
 
 char	*get_next_line(int fd);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
+int		find_char(const char *s, int c, size_t len);
 
 #endif //f
