@@ -5,6 +5,9 @@
             "label": "C/C++: gcc build active file",
             "command": "/usr/bin/gcc",
             "args": [
+                "-Wextra",
+                "-Wall",
+                "-Werror",
                 "-fdiagnostics-color=always",
                 "-g",
                 "*.c",

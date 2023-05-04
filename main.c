@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:57:23 by aantonio          #+#    #+#             */
-/*   Updated: 2023/04/29 11:51:55 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:56:55 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	main(void)
 	printf("READING\n");
 	my_file = open("asd", O_RDONLY);
 	while((current_line = get_next_line(my_file)))
+	{
 		printf("%s", current_line);
+		free(current_line);
+	}
 	free(current_line);
 	// current_line = get_next_line(my_file);
 	// printf("BEFORE\n");

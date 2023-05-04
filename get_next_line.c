@@ -6,53 +6,125 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/03 15:20:52 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:21:39 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+void	reorganize_buffer(char *current_line, char *buffer)
 {
-	char		*current_line;
-	char		*line_copy;
-	size_t		line_length;
-	size_t		char_index;
-	static char	*buffer = NULL;
+	size_t	char_index;
+	char	*new_buffer;
+	int		new_length;
+
+	char_index = find_char(buffer, '\n');
+	new_length = ft_strlen(buffer[char_index]);
+	new_buffer = ft_strldup(buffer[char_index], new_length);
+	free(buffer);
+	return (new_buffer);
+}
+
+void	load_buffer(char *dest, char *buffer, size_t len)
+{
+	char	*result;
+	char	*buffer_copy;
+	int		i;
+
+	buffer_copy = ft_strdup(buffer, len);
+	result = ft_strjoin(dest, buffer_copy);
+	free(dest);
+	free(buffer_copy);
+	return (result);
+}
+
+char *get_next_line(int fd)
+{
+	char			*current_line;
+	static char		*buffer = NULL;
+	size_t			read_result;
+	size_t			char_index;
 
 	if (!buffer)
-		buffer = malloc(sizeof(char) * BUFFER_SIZE);
-	line_length = BUFFER_SIZE;
-	current_line = malloc(sizeof(char) * (line_length + 1));
-	if (read(fd, current_line, BUFFER_SIZE) == 0)
+		buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	else
 	{
-		free(current_line);
-		return (NULL);
+		reorganize_buffer(current_line, buffer);
+		if (buffer != "")
+		{
+			char_index = find_char(buffer, '\n');
+			load_buffer(current_line, buffer, char_index);
+			return (current_line);
+		}
+
 	}
-	line_copy = malloc(sizeof(char) * (line_length + 1));
-	while (current_line[line_length - 1] != '\n')
+	read_result = read(fd, buffer, BUFFER_SIZE);
+	while (read_result == BUFFER_SIZE)
 	{
-		ft_memcpy(line_copy, current_line, line_length);
-		if (read(fd, &line_copy[line_length], BUFFER_SIZE) != BUFFER_SIZE)
-			break ;
-		char_index = find_char(line_copy, '\n', line_length + BUFFER_SIZE);
+		char_index = find_char(buffer, '\n');
 		if (char_index > 0)
 		{
-			ft_memcpy(current_line, line_copy, line_length + char_index);
-			if (BUFFER_SIZE > 1)
-				ft_memcpy(buffer, &line_copy[char_index],
-					(line_length + BUFFER_SIZE) - char_index + 1);
-			line_length = char_index + 1;
-			break ;
+			load_buffer(current_line, buffer, char_index);
+			return (current_line);
 		}
-		free(current_line);
-		current_line = malloc(sizeof(char) * (line_length + BUFFER_SIZE + 1));
-		ft_memcpy(current_line, line_copy, line_length + BUFFER_SIZE + 1);
-		line_length += BUFFER_SIZE;
-		free(line_copy);
-		line_copy = malloc(sizeof(char) * (line_length + BUFFER_SIZE));
+		load_buffer(current_line, buffer, BUFFER_SIZE);
+		read_result = read(fd, buffer, BUFFER_SIZE);
 	}
-	current_line[line_length] = '\0';
-	free(line_copy);
+	load_buffer(current_line,buffer,read_result);
+	free(buffer);
 	return (current_line);
 }
+
+// char	*get_next_line(int fd)
+// {
+// 	char		*current_line;
+// 	char		*line_copy;
+// 	size_t		line_length;
+// 	size_t		char_index;
+// 	static char	*buffer = NULL;
+
+// 	line_length = BUFFER_SIZE;
+// 	current_line = malloc(sizeof(char) * (line_length + 1));
+// 	if (BUFFER_SIZE > 1 && buffer && buffer[0] != 0)
+// 	{
+// 		char_index = find_char(buffer, '\n', BUFFER_SIZE);
+// 		int a = find_2nd_char(&buffer[char_index], '\n', BUFFER_SIZE - char_index);
+// 		ft_memcpy(current_line, &buffer[char_index],
+// 			a);
+// 	}
+// 	if (!buffer)
+// 	{
+// 		buffer = malloc(sizeof(char) * BUFFER_SIZE);
+// 		if (read(fd, current_line, BUFFER_SIZE) == 0)
+// 		{
+// 			free(current_line);
+// 			return (NULL);
+// 		}
+// 	}
+// 	line_copy = malloc(sizeof(char) * (line_length + 1));
+// 	while (current_line[line_length - 1] != '\n')
+// 	{
+// 		ft_memcpy(line_copy, current_line, line_length);
+// 		if (read(fd, &line_copy[line_length], BUFFER_SIZE) != BUFFER_SIZE)
+// 			break ;
+// 		char_index = find_char(line_copy, '\n', line_length + BUFFER_SIZE);
+// 		if (char_index > 0)
+// 		{
+// 			ft_memcpy(current_line, line_copy, char_index + 1);
+// 			if (BUFFER_SIZE > 1)
+// 				ft_memcpy(buffer, &line_copy[char_index],
+// 					(line_length + BUFFER_SIZE) - char_index);
+// 			line_length = char_index + 1;
+// 			break ;
+// 		}
+// 		free(current_line);
+// 		current_line = malloc(sizeof(char) * (line_length + BUFFER_SIZE + 1));
+// 		ft_memcpy(current_line, line_copy, line_length + BUFFER_SIZE + 1);
+// 		line_length += BUFFER_SIZE;
+// 		free(line_copy);
+// 		line_copy = malloc(sizeof(char) * (line_length + BUFFER_SIZE));
+// 	}
+// 	current_line[line_length] = '\0';
+// 	free(line_copy);
+// 	return (current_line);
+// }
