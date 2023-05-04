@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 22:18:16 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/04 22:37:21 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/05 00:14:04 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,6 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (charptr);
 }
 
-void	ft_bzero(void *s, size_t n)
-{
-	ft_memset(s, 0, n);
-}
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*ptr;
-
-	ptr = malloc(nmemb * size);
-	if (!ptr)
-		return (0);
-	ft_bzero(ptr, nmemb * size);
-	return (ptr);
-}
-
-
 size_t	ft_strlen(const char *str)
 {
 	size_t	length;
@@ -79,7 +62,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	s1len = ft_strlen(s1);
 	s2len = ft_strlen(s2);
-	newstr = ft_calloc(s1len + s2len + 1, sizeof(char));
+	newstr = malloc((s1len + s2len + 1) * sizeof(char));
+	ft_memset(newstr, '\0', (s1len + s2len + 1) * sizeof(char));
 	if (!newstr)
 		return (0);
 	i = 0;
@@ -101,8 +85,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 char	*ft_strldup(const char *s, size_t len)
 {
 	char	*newstr;
-	
-	newstr = ft_calloc(len + 1, sizeof(char));
+
+	newstr = malloc((len + 1) * sizeof(char));
+	ft_memset(newstr, '\0', (len + 1) * sizeof(char));
 	if (!newstr)
 		return (0);
 	ft_strlcpy(newstr, s, len + 1);

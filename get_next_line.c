@@ -6,37 +6,39 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/04 23:08:13 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/05 00:36:00 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*reorganize_buffer(char *buffer)
-{
-	size_t	char_index;
-	char	*new_buffer;
-	int		new_length;
+// char	*reorganize_buffer(char *buffer)
+// {
+// 	size_t	char_index;
+// 	char	*new_buffer;
+// 	int		new_length;
 
-	char_index = find_char(buffer, '\n');
-	if (char_index > 0)
-	{
-		new_length = ft_strlen(&buffer[char_index]);
-		new_buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
-		ft_strlcpy(new_buffer, &buffer[char_index], new_length + 1);
-		free(buffer);
-		return (new_buffer);
-	}
-	else
-		return (buffer);
-}
+// 	char_index = find_char(buffer, '\n');
+// 	if (char_index > 0)
+// 	{
+// 		new_length = ft_strlen(&buffer[char_index]);
+// 		new_buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+// 		ft_memset(new_buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
+// 		ft_strlcpy(new_buffer, &buffer[char_index], new_length + 1);
+// 		free(buffer);
+// 		return (new_buffer);
+// 	}
+// 	else
+// 		return (buffer);
+// }
 
 char	*load_buffer(char *dest, char *buffer, size_t len)
 {
 	char	*result;
 	char	*buffer_copy;
 
-	buffer_copy = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	buffer_copy = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	ft_memset(buffer_copy, '\0', sizeof(char) * (BUFFER_SIZE + 1));
 	ft_strlcpy(buffer_copy, buffer, len + 1);
 	result = ft_strjoin(dest, buffer_copy);
 	free(dest);
@@ -55,7 +57,7 @@ char	*process_buffer(char *current_line, char *buffer)
 		return (current_line);
 	}
 	current_line = load_buffer(current_line, buffer, BUFFER_SIZE);
-	ft_bzero(buffer, BUFFER_SIZE + 1);
+	ft_memset(buffer, '\0', BUFFER_SIZE + 1);
 	return (current_line);
 }
 
@@ -69,7 +71,7 @@ char	*my_read(int fd, char *current_line, char *buffer)
 		if (find_char(buffer, '\n') > 0)
 			return (load_buffer(current_line, buffer, find_char(buffer, '\n')));
 		current_line = load_buffer(current_line, buffer, BUFFER_SIZE);
-		ft_bzero(buffer, BUFFER_SIZE + 1);
+		ft_memset(buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
 		read_result = read(fd, buffer, BUFFER_SIZE);
 	}
 	if (read_result > 0)
@@ -87,15 +89,29 @@ char	*get_next_line(int fd)
 {
 	char			*current_line;
 	static char		*buffer = NULL;
+	char			*b2;
+	size_t			c;
 
 	if (BUFFER_SIZE == 0)
 		return (NULL);
-	current_line = ft_calloc(sizeof(char), 1);
+	current_line = malloc(sizeof(char) * 1);
+	ft_memset(current_line, '\0', sizeof(char) * 1);
 	if (!buffer)
-		buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	{
+		buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		ft_memset(buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
+	}
 	else
 	{
-		buffer = reorganize_buffer(buffer);
+		c = find_char(buffer, '\n');
+		if (c > 0)
+		{
+			b2 = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+			ft_memset(b2, '\0', sizeof(char) * (BUFFER_SIZE + 1));
+			ft_strlcpy(b2, &buffer[c], ft_strlen(&buffer[c]) + 1);
+			free(buffer);
+			buffer = b2;
+		}
 		if (buffer[0] != '\0')
 			return (process_buffer(current_line, buffer));
 	}
