@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/04 21:03:02 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/04 21:13:05 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char *get_next_line(int fd)
 {
 	char			*current_line;
 	static char		*buffer = NULL;
-	size_t			read_result;
+	int			read_result;
 	size_t			char_index;
 
 	current_line = ft_calloc(sizeof(char), 1);
