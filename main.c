@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:57:23 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/04 23:05:42 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/04 23:43:37 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	main(void)
 	char	*current_line;
 
 	// printf("READING\n");
-	my_file = open("multiple_line_no_nl", O_RDONLY);
+	// my_file = open("multiple_line_no_nl", O_RDONLY);
+	my_file = open("variable_nls.txt", O_RDONLY);
 	// my_file = 6;
 	while((current_line = get_next_line(my_file)))
 	{

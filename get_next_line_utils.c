@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 22:18:16 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/04 22:37:21 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/04 23:46:17 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,6 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (charptr);
 }
 
-void	ft_bzero(void *s, size_t n)
-{
-	ft_memset(s, 0, n);
-}
-
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
@@ -53,7 +48,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	ptr = malloc(nmemb * size);
 	if (!ptr)
 		return (0);
-	ft_bzero(ptr, nmemb * size);
+	ft_memset(ptr, '\0', nmemb * size);
 	return (ptr);
 }
 
@@ -95,17 +90,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	newstr[s1len + i] = '\0';
-	return (newstr);
-}
-
-char	*ft_strldup(const char *s, size_t len)
-{
-	char	*newstr;
-	
-	newstr = ft_calloc(len + 1, sizeof(char));
-	if (!newstr)
-		return (0);
-	ft_strlcpy(newstr, s, len + 1);
 	return (newstr);
 }
 
