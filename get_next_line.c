@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/04 21:13:05 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/04 21:30:49 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char *get_next_line(int fd)
 		buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 		return (current_line);
 	}
-	if (BUFFER_SIZE == 1 && current_line[0] != '\0')
+	if (current_line[0] != '\0')
 		return (current_line);
 	free(current_line);
 	current_line = NULL;
