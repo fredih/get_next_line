@@ -6,31 +6,31 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/05 00:36:00 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/05 00:50:42 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// char	*reorganize_buffer(char *buffer)
-// {
-// 	size_t	char_index;
-// 	char	*new_buffer;
-// 	int		new_length;
+char	*reorganize_buffer(char *buffer)
+{
+	size_t	char_index;
+	char	*new_buffer;
+	int		new_length;
 
-// 	char_index = find_char(buffer, '\n');
-// 	if (char_index > 0)
-// 	{
-// 		new_length = ft_strlen(&buffer[char_index]);
-// 		new_buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-// 		ft_memset(new_buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
-// 		ft_strlcpy(new_buffer, &buffer[char_index], new_length + 1);
-// 		free(buffer);
-// 		return (new_buffer);
-// 	}
-// 	else
-// 		return (buffer);
-// }
+	char_index = find_char(buffer, '\n');
+	if (char_index > 0)
+	{
+		new_length = ft_strlen(&buffer[char_index]);
+		new_buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		ft_memset(new_buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
+		ft_strlcpy(new_buffer, &buffer[char_index], new_length + 1);
+		free(buffer);
+		return (new_buffer);
+	}
+	else
+		return (buffer);
+}
 
 char	*load_buffer(char *dest, char *buffer, size_t len)
 {
@@ -84,13 +84,10 @@ char	*my_read(int fd, char *current_line, char *buffer)
 	return (NULL);
 }
 
-
 char	*get_next_line(int fd)
 {
 	char			*current_line;
 	static char		*buffer = NULL;
-	char			*b2;
-	size_t			c;
 
 	if (BUFFER_SIZE == 0)
 		return (NULL);
@@ -103,15 +100,7 @@ char	*get_next_line(int fd)
 	}
 	else
 	{
-		c = find_char(buffer, '\n');
-		if (c > 0)
-		{
-			b2 = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-			ft_memset(b2, '\0', sizeof(char) * (BUFFER_SIZE + 1));
-			ft_strlcpy(b2, &buffer[c], ft_strlen(&buffer[c]) + 1);
-			free(buffer);
-			buffer = b2;
-		}
+		buffer = reorganize_buffer(buffer);
 		if (buffer[0] != '\0')
 			return (process_buffer(current_line, buffer));
 	}

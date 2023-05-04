@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 22:18:16 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/05 00:14:04 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/05 00:50:54 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	newstr[s1len + i] = '\0';
-	return (newstr);
-}
-
-char	*ft_strldup(const char *s, size_t len)
-{
-	char	*newstr;
-
-	newstr = malloc((len + 1) * sizeof(char));
-	ft_memset(newstr, '\0', (len + 1) * sizeof(char));
-	if (!newstr)
-		return (0);
-	ft_strlcpy(newstr, s, len + 1);
 	return (newstr);
 }
 
