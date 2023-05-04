@@ -6,30 +6,11 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 22:18:16 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/04 16:16:57 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/04 22:37:21 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t		i;
-	char		*chardest;
-	char		*charsrc;
-
-	if (n > 0 && !src && !dest)
-		return (dest);
-	chardest = (char *)dest;
-	charsrc = (char *)src;
-	i = 0;
-	while (i < n)
-	{
-		*(chardest + i) = *(charsrc + i);
-		i++;
-	}
-	return (dest);
-}
 
 int	find_char(const char *s, int c)
 {
@@ -43,43 +24,6 @@ int	find_char(const char *s, int c)
 		i++;
 	}
 	return (0);
-}
-
-// int	find_char(const char *s, int c, size_t len)
-// {
-// 	size_t	i;
-
-// 	i = 1;
-// 	while (i <= len)
-// 	{
-// 		if ((unsigned char)s[i - 1] == (unsigned char)c)
-// 			return (i);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-int	find_2nd_char(const char *s, int c, size_t len)
-{
-	size_t	i;
-	size_t	counter;
-	size_t	first_index;
-
-	i = 1;
-	counter = 0;
-	while (i < len)
-	{
-		if ((unsigned char)s[i] == (unsigned char)c)
-		{
-			counter++;
-			if (counter == 1)
-				first_index = i;
-			if (counter == 2)
-				return (i - first_index);
-		}
-		i++;
-	}
-	return (i - first_index);
 }
 
 void	*ft_memset(void *s, int c, size_t n)
