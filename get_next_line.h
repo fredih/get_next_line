@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:10:03 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/04 16:17:16 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/04 20:40:20 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strldup(const char *s, size_t len);
 size_t	ft_strlcpy(char *dest, const char *src, size_t n);
+void	ft_bzero(void *s, size_t n);
 
 #endif //f
