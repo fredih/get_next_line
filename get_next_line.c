@@ -6,7 +6,7 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/05 14:23:40 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/05 15:40:58 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,22 +90,24 @@ char	*get_next_line(int fd)
 {
 	char			*current_line;
 	static char		buffer[BUFFER_SIZE + 1];
+	size_t			char_index;
 
 	if (BUFFER_SIZE == 0)
 		return (NULL);
 	current_line = malloc(sizeof(char) * 1);
 	ft_memset(current_line, '\0', sizeof(char) * 1);
-	// if (!buffer)
-	// {
-	// 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	// 	ft_memset(buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
-	// }
-	// else
-	// {
 	reorganize_buffer(buffer);
 	if (buffer[0] != '\0')
-		return (process_buffer(current_line, buffer));
-	// }
+	{
+		char_index = find_char(buffer, '\n');
+		if (char_index > 0)
+		{
+			current_line = load_buffer(current_line, buffer, char_index);
+			return (current_line);
+		}
+		current_line = load_buffer(current_line, buffer, BUFFER_SIZE);
+		ft_memset(buffer, '\0', BUFFER_SIZE + 1);
+	}
 	current_line = my_read(fd, current_line, buffer);
 	return (current_line);
 }

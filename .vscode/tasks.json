@@ -12,7 +12,7 @@
                 "-g",
                 "*.c",
                 "-D",
-                "BUFFER_SIZE=1000000",
+                "BUFFER_SIZE=42",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
