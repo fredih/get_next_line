@@ -6,30 +6,34 @@
 /*   By: aantonio <aantonio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 21:09:13 by aantonio          #+#    #+#             */
-/*   Updated: 2023/05/05 00:50:42 by aantonio         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:23:40 by aantonio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*reorganize_buffer(char *buffer)
+void	reorganize_buffer(char *buffer)
 {
 	size_t	char_index;
-	char	*new_buffer;
-	int		new_length;
+	size_t	len;
+	size_t	i;
 
 	char_index = find_char(buffer, '\n');
+	len = ft_strlen(&buffer[char_index]);
 	if (char_index > 0)
 	{
-		new_length = ft_strlen(&buffer[char_index]);
-		new_buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		ft_memset(new_buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
-		ft_strlcpy(new_buffer, &buffer[char_index], new_length + 1);
-		free(buffer);
-		return (new_buffer);
+		i = 0;
+		while (i < len)
+		{
+			buffer[i] = buffer[char_index + i];
+			i++;
+		}
+		while (i < BUFFER_SIZE + 1)
+		{
+			buffer[i] = '\0';
+			i++;
+		}
 	}
-	else
-		return (buffer);
 }
 
 char	*load_buffer(char *dest, char *buffer, size_t len)
@@ -79,33 +83,29 @@ char	*my_read(int fd, char *current_line, char *buffer)
 	if (current_line[0] != '\0')
 		return (current_line);
 	free(current_line);
-	free(buffer);
-	buffer = NULL;
 	return (NULL);
 }
 
 char	*get_next_line(int fd)
 {
 	char			*current_line;
-	static char		*buffer = NULL;
+	static char		buffer[BUFFER_SIZE + 1];
 
 	if (BUFFER_SIZE == 0)
 		return (NULL);
 	current_line = malloc(sizeof(char) * 1);
 	ft_memset(current_line, '\0', sizeof(char) * 1);
-	if (!buffer)
-	{
-		buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		ft_memset(buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
-	}
-	else
-	{
-		buffer = reorganize_buffer(buffer);
-		if (buffer[0] != '\0')
-			return (process_buffer(current_line, buffer));
-	}
+	// if (!buffer)
+	// {
+	// 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	// 	ft_memset(buffer, '\0', sizeof(char) * (BUFFER_SIZE + 1));
+	// }
+	// else
+	// {
+	reorganize_buffer(buffer);
+	if (buffer[0] != '\0')
+		return (process_buffer(current_line, buffer));
+	// }
 	current_line = my_read(fd, current_line, buffer);
-	if (!current_line)
-		buffer = NULL;
 	return (current_line);
 }
